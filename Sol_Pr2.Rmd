@@ -3,12 +3,10 @@ title: "Pon un título a tu documento"
 author: "Pon aquí tu nombre y apellidos"
 date: "`r Sys.Date()`"
 output:
-  bookdown::pdf_document2:
+  pdf_document:
     toc: true
     toc_depth: 3
     number_sections: true
-    figure_caption: "Figura" # Referencias en castellano
-    table_caption: "Tabla"
   html_document:
     echo: true
     number_sections: true
@@ -18,10 +16,12 @@ output:
     echo: true
     number_sections: true
     toc: true
-  pdf_document:
+  bookdown::pdf_document2:
     toc: true
     toc_depth: 3
     number_sections: true
+    figure_caption: "Figura" # Referencias en castellano
+    table_caption: "Tabla"
   bookdown::html_document2:
     echo: true
     number_sections: true
@@ -337,8 +337,7 @@ Crea un gráfico en el que estén los boxplots de la variable MinTemp para cada 
 #usando geom_boxplot creo lo boxplots
 p_1_ej7_box <- ggplot(ds, aes(x = Year, y = MinTemp)) +
   geom_boxplot()
-
-p_box
+p_1_ej7_box
 ```
 
 Crea un gráfico en el que estén los gráficos de violín de la variable MaxTemp para cada uno de los años presentes en la variable Year del dataset. Añade en el mismo gráfico una capa de etiquetas de título (Distribución de temperaturas máximas por año), eje x (Año) y eje y (Temperatura (ºC)). Colorea el interior de los violines según la la variable Year.
