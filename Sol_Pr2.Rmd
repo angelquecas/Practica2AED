@@ -244,34 +244,45 @@ ggsave('./results/Ejercicio4.pdf')
 # Ejercicio 5
 
 Añadir barras de error a un gráfico de línea.
-```{r}
-
-```
-
 Carga el fichero Experimento.Rdata. Examina las variables que tiene dicho dataset.
 ```{r}
-
+#cargamos el fichero especificado
+load("./data/Experimento.Rdata")
 ```
 
 Representa un gráfico de puntos, en el que se muestre la Dosis en el eje x
  y la Altura en el eje y. Queremos que los datos de cada Complemento se representen en una línea diferente con diferentes trazos. Hazlo incluyendo las opciones de tipo de línea y forma del punto dentro del aes() de la capa ggplot.
 ```{r}
-
+#usamos ggplot con x,y, group, linetype y shape y luego geom_point para los puntos y geom_line para las lineas
+p_1_ej5 <- ggplot(Experimento, aes(x = Dosis, y = Altura, group = Complemento, linetype = Complemento, shape = Complemento)) +
+  geom_point() +
+  geom_line()
+p_1_ej5
 ```
 
 Crea otro gráfico añadiendo al gráfico anterior barras de error en cada punto. 
 El error viene dado por la variable Error_Altura.
 ```{r}
-
+#añadimos geom_errorbar dependiente de la y actual (Altura) y el error dado (Error_Altura)
+p_2_ej5_error <- p_1_ej5 + geom_errorbar(aes(ymin = Altura - Error_Altura, ymax = Altura + Error_Altura), width =.1, position=position_dodge(0.05))
+p_2_ej5_error
 ```
 
 Crea otro gráfico, como el anterior (idéntico), pero en este caso no puedes incluir el tipo de línea y el tipo de punto en aes() de la capa ggplot. Además queremos que la paleta de colores sea en tonos de rojos (scale_color_brewer).
 ```{r}
-
+#como no podemos usar shape ni linetype en ggplot, lo pasamos a geom_point y geom_line,
+#ademas añadimos scale_color_brewer(palette="Reds")para la paleta de colores.
+p_3_ej5_error <- ggplot(Experimento, aes(x = Dosis, y = Altura, group = Complemento, color=Complemento)) +
+  geom_point(aes(shape = Complemento)) +
+  geom_line( aes(linetype = Complemento)) +
+  geom_errorbar(aes(ymin = Altura - Error_Altura, ymax = Altura + Error_Altura), width =.1, position=position_dodge(0.05)) +
+  scale_color_brewer(palette="Reds")
+p_3_ej5_error
 ```
 
 Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio5.pdf.
 ```{r}
-
+#guardamos el último plot
+ggsave('./results/Ejercicio5.pdf')
 ```
 
