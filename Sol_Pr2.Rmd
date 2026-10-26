@@ -379,3 +379,113 @@ Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercici
 ggsave('./results/Ejercicio7.pdf')
 ```
 
+
+# Ejercicio 8
+Descarga de la url “http://assets.datacamp.com/blog_assets/chol.txt” el dataset de Datacamp que utilizarás para este ejercicio y cárgalo en un datafrae .
+```{r}
+#descargamos el contenido del link
+url <- "http://assets.datacamp.com/blog_assets/chol.txt"
+df8 <- read.table(url, header = TRUE)
+```
+
+Representa el histograma de la variable HEIGHT del dataframe cargado del fichero anterior.
+```{r}
+# con   geom_histogram() creamos el histograma
+
+p_1_ej8_hist <- ggplot(df8, aes(x = HEIGHT)) +
+  geom_histogram()
+p_1_ej8_hist
+```
+
+Añade título (“Histograma de la variable Altura”), una etiqueta en el eje x
+ (“Altura (cm)”) y una etiqueta en el eje y (“Frecuencia”).
+```{r}
+#ponemos con labs los elementos necesarios
+p_1_ej8_hist <- p_1_ej8_hist +
+  labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia / Densidad"
+  )
+p_1_ej8_hist
+```
+
+Ajusta el rango de representación entre 155 y 195, además fuerza que el histograma tenga 20 bins.(usa parámetro breaks)
+```{r}
+#con breaks hacemos lo que se pide
+p_1_ej8_hist <- ggplot(df8, aes(x = HEIGHT)) +
+  geom_histogram(
+    breaks = seq(155, 195, length.out = 21)
+  ) +
+  labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia / Densidad"
+  )
+p_1_ej8_hist
+```
+
+Haz que las barras del histograma sean de color azul con una grado de transparencia del 50% y el contorno de color rojo.
+```{r}
+#mediante fill, alpha y color podemos hacer las barras azules con 0,5 de transparencia y contorno rojo
+p_1_ej8_hist <- ggplot(df8, aes(x = HEIGHT)) +
+  geom_histogram(
+    breaks = seq(155, 195, length.out = 21),
+    fill = "blue", 
+    alpha = 0.5, 
+    color = "red"
+  ) + 
+  labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia / Densidad"
+  )
+  
+p_1_ej8_hist
+```
+
+Añade la curva de distribución estimada de color verde.
+```{r}
+#tenemos que usar geom_density y a la vez aes(y = after_stat(density))
+p_1_ej8_hist <- ggplot(df8, aes(x = HEIGHT)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    breaks = seq(155, 195, length.out = 21),
+    fill = "blue", 
+    alpha = 0.5, 
+    color = "red"
+  ) + 
+  labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia / Densidad"
+  ) + geom_density(color = "green")
+p_1_ej8_hist
+```
+
+Representa el mismo histograma del apartado anterior para cada valor de la variable MORT, recuerda utilizar la función facet_grid().
+```{r}
+#añadimos facet_grid
+p_2_ej8_hist <- ggplot(df8, aes(x = HEIGHT)) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    breaks = seq(155, 195, length.out = 21),
+    fill = "blue", 
+    alpha = 0.5, 
+    color = "red"
+  ) + 
+  facet_grid(MORT ~ .)+
+  labs(
+    title = "Histograma de la variable Altura",
+    x = "Altura (cm)",
+    y = "Frecuencia / Densidad"
+  ) + geom_density(color = "green")
+p_2_ej8_hist
+```
+
+Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio8.pdf.
+```{r}
+#almacemos en la ruta especificada
+ggsave('./results/Ejercicio8.pdf')
+```
+
