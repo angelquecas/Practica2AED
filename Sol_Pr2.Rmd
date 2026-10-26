@@ -286,3 +286,41 @@ Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercici
 ggsave('./results/Ejercicio5.pdf')
 ```
 
+# Ejercicio 6
+El fichero iceRiver.RData contiene información del caudal de dos ríos islandeses medidos a diarios durante 3 años. Puedes obtener información detallada de las variables usando > ?tseries::ice.river
+```{r}
+#cargamos el fichero deseado
+load("./data/iceRiver.RData")
+```
+
+Representa el caudal de ambos ríos a lo largo del período considerado coloreando una serie (flow.vat) en color rojo y la otra en color azul.
+```{r}
+#creamos el gráfico con ggplot y dos geom_line originalmente la primera capa solo tiene tiempo
+#para de esta forma en cada linea darle la altura deseada (caudal del rio) y el color deseado
+p_1_ej6_rios <- ggplot(ice.river.df, aes(x = time)) +
+  geom_line(aes(y = flow.vat, color = "red")) +
+  geom_line(aes(y = flow.jok, color = "blue"))
+p_1_ej6_rios
+```
+
+Utiliza la función labs para enriquecer el gráfico.
+```{r}
+#añadimos una capa labs con titulo, subtitulo, titulo del eje x, del y y pie de tabla
+p_1_ej6_rios <- p_1_ej6_rios +
+  labs(
+    title = "Evolución diaria del caudal de los ríos jok y vat",
+    subtitle = "Medición realizada a diarios durante 3 años",
+    x = "Días",
+    y = "Caudal",
+    caption = "Fuente: Datos de tseries::ice.river"
+  )
+p_1_ej6_rios
+```
+
+Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio5.pdf.
+```{r}
+#guardamos el último plot en la ruta deseada
+ggsave('./results/Ejercicio6.pdf')
+```
+
+
