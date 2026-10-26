@@ -50,7 +50,7 @@ language:
     remark: 'Nota: '
     solution: 'Solución. '
 ---
-Ejercicio 1
+# Ejercicio 1
 Carga el fichero weatherAUS.RData utilizando lo aprendido en la práctica 1.
 ```{r}
 #Cargamos el fichero weatherAUS.RData
@@ -94,4 +94,87 @@ Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercici
 #guardamos grafico3 con ggsave indicando la ruta y que gráfico queremos guardar
 ggsave('./results/Ejercicio1.pdf', plot = grafico3)
 ```
+# Ejercicio 2
+Utilizando ggplot haz un grafico de dispersión en el que representes las variables Temp9am y Pressure9am en los ejes x e y respectivamente.
+```{r}
+#Creamos el gráfico indicando los ejes y posteriormente añadiendo una capa para el gráfico de dispersión
+p1 <- ggplot(ds, aes(x = Temp9am, y = Pressure9am)) + geom_point()
+p1
+```
+ 
+Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con la forma del punto.
+```{r}
+#añadimos shape=RainToday para que la forma de los puntos dependa de si ese día ha llovido o no
+p1 <- ggplot(ds, aes(x = Temp9am, y = Pressure9am, shape=RainToday)) + geom_point()
+p1
+```
 
+Modifica el gráfico anterior para incluir información categórica proporcionada por la variable RainToday con el color del punto. ¿Con qué representación (color o forma) se observa mejor la información que introduce la variable RainToday?
+```{r}
+#cambiamos el shape por color, para hacer que ahora sea el color el que depende de si ha llovido o no
+p1 <- ggplot(ds, aes(x = Temp9am, y = Pressure9am, color=RainToday)) + geom_point()
+p1
+#Se observa mejor con el color. Se distinguen mucho más rápido los colores que las formas, 
+#especialmente si hay solapamiento entre los puntos.
+```
+
+Añade títulos explicativos al gráfico anterior (debe aparece un título, subtítulo, leyendas e información de las variables representadas en los ejes).
+```{r}
+#añadimos la capa labs, indicando un título, subtítulo, leyenda e información
+p1 <- p1 +
+  labs(
+    title = "Gráfico de dispersión: x=Temperatura y y=Presión",
+    subtitle = "El color de las instancias depende de si ese día ha llovido o no",
+    x = "Temperatura",
+    y = "Presión",
+    color = "¿Ha llovido hoy?"
+  )
+p1
+```
+
+Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio2.pdf.
+```{r}
+#guardamos p1 en la carpeta results con el nombre indicado
+ggsave('./results/Ejercicio2.pdf', plot = p1)
+```
+
+# Ejercicio 3
+Carga el fichero iris.tidy.Rdata utilizando lo aprendido en la práctica 1.
+```{r}
+
+```
+
+Utiliza la función str() para ver qué variables contiene el dataset.
+```{r}
+
+```
+
+Crea un objeto ggplot denominado iris.grafico1 en el que esté definido el conjunto de datos iris.tidy alojado en el fichero iris.tidy.RData y un aesthetics en el que en el eje x esté definida la variable Species y en el eje y esté definida la variable Value.
+ ```{r}
+
+```
+
+Añade una capa que defina el objeto geométrico necesario para construir un gráfico de dispersión de las variables Species y Value.
+```{r}
+
+```
+
+Modifica el aesthetics de iris.grafico1 para visualizar la variable categórica Part y almacénalo en iris.grafico2. A partir del objeto iris.grafico2, representa un gráfico de dispersión en el que se muestren los puntos dados por las variables Species y Value, y el color del punto se corresponda con el valor de la variable Part.
+```{r}
+
+```
+
+Incluye información de la variable Measure haciendo dos gráficos de dispersión (dispuestos en filas) con facet_grid(), como en el apartado de introducción, para los dos valores que toma la variable Measure. Prueba a cambiar la disposición de los gráficos para que sea en columnas ¿Qué disposición, en filas o en columnas, permite comparar mejor los valores de las dos variables?
+```{r}
+
+```
+
+Cambia ahora la capa geom_point() del gráfico anterior por la capa geom_jitter(). ¿Qué diferencia observas?
+```{r}
+
+```
+
+Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio3.pdf.
+```{r}
+
+```
