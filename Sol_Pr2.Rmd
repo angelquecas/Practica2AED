@@ -91,8 +91,8 @@ grafico3
 
 Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio1.pdf.
 ```{r}
-#guardamos grafico3 con ggsave indicando la ruta y que gráfico queremos guardar
-ggsave('./results/Ejercicio1.pdf', plot = grafico3)
+#guardamos grafico3 con ggsave indicando la ruta y se guarda el último gráfico
+ggsave('./results/Ejercicio1.pdf')
 ```
 # Ejercicio 2
 Utilizando ggplot haz un grafico de dispersión en el que representes las variables Temp9am y Pressure9am en los ejes x e y respectivamente.
@@ -135,46 +135,143 @@ p1
 Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio2.pdf.
 ```{r}
 #guardamos p1 en la carpeta results con el nombre indicado
-ggsave('./results/Ejercicio2.pdf', plot = p1)
+ggsave('./results/Ejercicio2.pdf')
 ```
 
 # Ejercicio 3
 Carga el fichero iris.tidy.Rdata utilizando lo aprendido en la práctica 1.
 ```{r}
-
+#cargamos el fichero iris_tidy.Rdata
+load("./data/iris_tidy.Rdata")
 ```
 
 Utiliza la función str() para ver qué variables contiene el dataset.
 ```{r}
-
+#con la función str podemos ver que contiene un df, en este caso iris.tidy
+str(iris.tidy)
 ```
 
 Crea un objeto ggplot denominado iris.grafico1 en el que esté definido el conjunto de datos iris.tidy alojado en el fichero iris.tidy.RData y un aesthetics en el que en el eje x esté definida la variable Species y en el eje y esté definida la variable Value.
- ```{r}
-
+```{r}
+#creamos iris.grafico1 mediante ggplot indicando de donde salen los datos y en el eje x Species y en el eje y Value
+iris.grafico1 <- ggplot(iris.tidy, aes(x = Species, y = Value))
+iris.grafico1
 ```
 
 Añade una capa que defina el objeto geométrico necesario para construir un gráfico de dispersión de las variables Species y Value.
 ```{r}
-
+#para poder construir el gráfico de dispersión se añade a iris.grafico1 geom_point
+ iris.grafico1<- iris.grafico1 + geom_point()
+iris.grafico1
 ```
 
 Modifica el aesthetics de iris.grafico1 para visualizar la variable categórica Part y almacénalo en iris.grafico2. A partir del objeto iris.grafico2, representa un gráfico de dispersión en el que se muestren los puntos dados por las variables Species y Value, y el color del punto se corresponda con el valor de la variable Part.
 ```{r}
-
+#añadimos color = Part para  que el color del punto se corresponda con el valor de la variable Part
+iris.grafico2 <- ggplot(iris.tidy, aes(x = Species, y = Value, color = Part)) + geom_point()
+iris.grafico2
 ```
 
 Incluye información de la variable Measure haciendo dos gráficos de dispersión (dispuestos en filas) con facet_grid(), como en el apartado de introducción, para los dos valores que toma la variable Measure. Prueba a cambiar la disposición de los gráficos para que sea en columnas ¿Qué disposición, en filas o en columnas, permite comparar mejor los valores de las dos variables?
 ```{r}
-
+p_filas <- iris.grafico2 + facet_grid(Measure ~ .)
+p_filas
+p_columnas <- iris.grafico2 + facet_grid( .~Measure)
+p_columnas
+#La disposición en columnas (. ~ Measure) permite una mejor comparación.
 ```
 
 Cambia ahora la capa geom_point() del gráfico anterior por la capa geom_jitter(). ¿Qué diferencia observas?
 ```{r}
+iris.grafico_jitter <- ggplot(iris.tidy, aes(x = Species, y = Value, color = Part)) + geom_jitter()
+iris.grafico_jitter
+#geom_point() dibuja los puntos exactamente en sus coordenadas, lo que provoca solapamientos.
+#geom_jitter() añade una pequeña cantidad de ruido a los puntos, con lo que se evita el solapamiento.
 
 ```
 
 Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio3.pdf.
 ```{r}
+ggsave('./results/Ejercicio3.pdf')
 
 ```
+# Ejercicio 4
+Carga el fichero Ejercicio4_Data.Rdata. Examina las variables que tiene dicho dataset.
+```{r}
+#cargamos Ejercicio4_Data.Rdata
+load("./data/Ejercicio4_Data.Rdata")
+```
+
+Representa un gráfico de puntos, en el que se muestre la fecha en el eje x
+ y las ventas en el eje y. Queremos que los datos de cada fabricante sean de un color distinto. ¿Es este gráfico válido para evaluar la evolución de las ventas de cada fabricante?
+```{r}
+#creamos con ggplot el grafico base, con color=Fabricante le ponemos un color diferente para cada Fabricante y
+#dibujamos el gáfico de dispersión.
+p1_ej4_puntos <- ggplot(DatosEjer4, aes(x = Fecha, y = Ventas, color = Fabricante)) + geom_point()
+p1_ej4_puntos
+#Un gráfico de puntos (sin líneas) no es el más adecuado ya que solo muestra los valores individuales
+#sin ningúna indiacaión para seguir visualmente la evolución en el tiempo.
+```
+
+Representa un gráfico como el anterior en el que se muestre la línea que une los puntos que antes has representado.
+```{r}
+#añadimos geom_line para que los puntos se añadan con líneas
+p_2_ej4_lineas <- ggplot(DatosEjer4, aes(x = Fecha, y = Ventas, color = Fabricante)) + geom_point() + geom_line()
+p_2_ej4_lineas
+```
+
+Modifica el gráfico anterior para que la tendencia de cada fabricante este trazada con un tipo de línea diferente.
+```{r}
+#añadimos aes(linetype=Fabricante) para que cada linea tenga un tipo de linea diferente segun el Fabricante
+p_3_ej4_lineas <- ggplot(DatosEjer4, aes(x = Fecha, y = Ventas, color = Fabricante)) + geom_point() + geom_line(aes(linetype=Fabricante))
+p_3_ej4_lineas
+```
+
+Añade el siguiente título al gráfico “Ventas mensuales de diferentes compañías tecnológicas”.
+```{r}
+#añadimos el titulo mediante ggtitle
+p_final_ej4 <- p_3_ej4_lineas + ggtitle("Ventas mensuales de diferentes compañías tecnológicas")
+p_final_ej4
+```
+
+Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio4.pdf.
+```{r}
+#guargamos el ultimo gráfico en la ruta especificada
+ggsave('./results/Ejercicio4.pdf')
+```
+
+
+# Ejercicio 5
+
+Añadir barras de error a un gráfico de línea.
+```{r}
+
+```
+
+Carga el fichero Experimento.Rdata. Examina las variables que tiene dicho dataset.
+```{r}
+
+```
+
+Representa un gráfico de puntos, en el que se muestre la Dosis en el eje x
+ y la Altura en el eje y. Queremos que los datos de cada Complemento se representen en una línea diferente con diferentes trazos. Hazlo incluyendo las opciones de tipo de línea y forma del punto dentro del aes() de la capa ggplot.
+```{r}
+
+```
+
+Crea otro gráfico añadiendo al gráfico anterior barras de error en cada punto. 
+El error viene dado por la variable Error_Altura.
+```{r}
+
+```
+
+Crea otro gráfico, como el anterior (idéntico), pero en este caso no puedes incluir el tipo de línea y el tipo de punto en aes() de la capa ggplot. Además queremos que la paleta de colores sea en tonos de rojos (scale_color_brewer).
+```{r}
+
+```
+
+Almacena en formato pdf el gráfico resultante en un fichero denominado Ejercicio5.pdf.
+```{r}
+
+```
+
